@@ -1,26 +1,28 @@
 import { useState } from 'react'
 
 function App() {
-  const [addTitleTerm, setAddTitleTerm] = useState('');
-  const [addAuthorTerm, setAddAuthorTerm] = useState('');
-  const [addStatusTerm, setAddStatusTerm] = useState('draft');
+  const [formData, setFormData] = useState({
+    title: '',
+    author: '',
+     image: '',
+    content: '',
+    category: '',
+    published: false
+  });
+  
   const [articles, setArticles] = useState([]);
 
   const handleInputChange = (e, setFunction) => {
     setFunction(e.target.value);
   };
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (!addTitleTerm || !addAuthorTerm) {
+    if (!formData.title || !formData.author || !formData.content || !formData.category) {
       alert("Inserisci tutti i valori");
       return;
     }
-    setArticles([...articles, { title: addTitleTerm, author: addAuthorTerm, status: addStatusTerm }]);
-    setAddTitleTerm('');
-    setAddAuthorTerm('');
-    setAddStatusTerm('draft');
-  };
+  }
+  
   const deleteArticle = (articleIndex) => { 
     const newArticles = [...articles]; 
     newArticles.splice(articleIndex, 1);
@@ -43,28 +45,46 @@ function App() {
         <form onSubmit={handleFormSubmit}>
           <input
             type="text"
-            value={addTitleTerm}
-            onChange={(e) => handleInputChange(e, setAddTitleTerm)}
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
             placeholder="Titolo dell'articolo"
             className="form-control mb-2"
             required
           />
           <input
-            type="text"
-            value={addAuthorTerm}
-            onChange={(e) => handleInputChange(e, setAddAuthorTerm)}
-            placeholder="Autore"
+           type="text"
+           name="author"
+           value={formData.author}
+           onChange={handleInputChange}
+           placeholder="Autore"
+           className="form-control mb-2"
+           required
+          />
+          <input
+            name="image"
+            value={formData.image}
+            onChange={handleInputChange}
+            placeholder="immagine"
+            className="form-control mb-2"
+          />
+          <input
+            name="content"
+            value={formData.content}
+            onChange={handleInputChange}
+            placeholder="Contenuto dell'articolo"
             className="form-control mb-2"
             required
           />
-          <select
-            value={addStatusTerm}
-            onChange={(e) => handleInputChange(e, setAddStatusTerm)}
-            className="form-select mb-2 "
-          >
-            <option value="draft">draft</option>
-            <option value="published">Published</option>
-          </select>
+          <input
+            type="text"
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            placeholder="Categoria"
+            className="form-control mb-2"
+            required
+          />
           <button type="submit" className="btn btn-primary m-2">Aggiungi Articolo</button>
         </form>
         <ul className="list-group mt-3">
